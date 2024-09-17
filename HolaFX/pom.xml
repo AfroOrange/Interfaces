@@ -14,10 +14,10 @@
     <maven.compiler.target>22</maven.compiler.target>
     <maven.compiler.source>22</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <exec.mainClass>dad.Main</exec.mainClass>
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>

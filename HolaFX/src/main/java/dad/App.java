@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -28,11 +29,15 @@ public class App extends Application {
 
         // Botones
         Button botonPrueba = new Button();
+        botonPrueba.setTooltip(new Tooltip("Nestorlol putero")); // .setTooltip(new Tooltip)
         botonPrueba.setText("wiwi");
         botonPrueba.setLayoutX(20);
         botonPrueba.setLayoutY(50);
 
-        botonPrueba.setOnAction(actionEvent -> System.out.println("olee"));
+        botonPrueba.setOnAction(actionEvent -> {
+            System.out.println("olee");
+            saludoLabel.setText("elwiwi vive");
+        });
 
         // Panel
         Pane root = new Pane();
