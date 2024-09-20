@@ -2,6 +2,7 @@ package dad.recogida.datos;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -17,7 +18,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecogidaDatos extends Application {
 
@@ -31,7 +33,7 @@ public class RecogidaDatos extends Application {
     private Button botonLimpiar;
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
 
         nombrePersona = new TextField();
         etiquetaNombre = new Label();
@@ -51,17 +53,17 @@ public class RecogidaDatos extends Application {
         etiquetaEdad.setText("Edad: ");
         edadPersona.setPromptText("Introduce la edad de la persona");
 
-        // Hbox para nombre
+        // HBox para nombre
         HBox hboxNombre = new HBox(10);
         hboxNombre.getChildren().addAll(etiquetaNombre, nombrePersona);
 
-        //Hbox para apellido
+        // HBox para apellido
         HBox hboxApellido = new HBox(10);
         hboxApellido.getChildren().addAll(etiquetaApellido, apellidoPersona);
 
-        // Hbox para edad
+        // HBox para edad
         HBox hboxEdad = new HBox(10);
-        hboxEdad.setPrefSize(300,300);
+        hboxEdad.setPrefSize(300, 300);
         hboxEdad.getChildren().addAll(etiquetaEdad, edadPersona);
 
         // Botones para guardar y limpiar
@@ -77,13 +79,13 @@ public class RecogidaDatos extends Application {
 
         // botón para limpiar campos
         botonLimpiar = new Button("Limpiar");
-        botonLimpiar.setOnAction(e -> onLimpiarCampos(e));
+        botonLimpiar.setOnAction(this::onLimpiarCampos);
 
         HBox hboxBotones = new HBox(10);
         hboxBotones.setAlignment(Pos.CENTER);
         hboxBotones.getChildren().addAll(botonGuardar, botonLimpiar);
 
-        // Vbox para integrar los cuadros de textos creados
+        // VBox para integrar los cuadros de textos creados
         VBox root = new VBox();
         root.setStyle("-fx-background-color: f5d376");
         root.setPadding(new Insets(50));
@@ -92,41 +94,56 @@ public class RecogidaDatos extends Application {
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(hboxNombre, hboxApellido, hboxEdad, hboxBotones);
 
-
         // Escena
         Scene scene = new Scene(root, 400, 200);
         stage.setTitle("Recogida de Datos");
         stage.setScene(scene);
         stage.show();
-
     }
 
     private void onGuardarAction() throws IOException {
-        Persona p = new Persona();
-        p.setNombre(nombrePersona.getText()); // Get the text value
-        p.setApellidos(apellidoPersona.getText()); // Get the text value
-        p.setEdad(Integer.valueOf(edadPersona.getText())); // Get the text value
 
         // Convertir a JSON usando Gson
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .create();
 
-        String json = gson.toJson(p);
-
-        // Guardar en archivo JSON
+        // Leer el archivo JSON si existe, si no, crear una lista vacía
         File jsonFile = new File("RecogidaDatos.json");
+        List<Persona> personasList = new ArrayList<>();
+
+        if (jsonFile.exists()) {
+            String jsonContent = Files.readString(jsonFile.toPath());
+            if (!jsonContent.isEmpty()) {
+                personasList = gson.fromJson(jsonContent, new TypeToken<List<Persona>>() {}.getType());
+            }
+        }
+
+        // Crear nueva Persona y agregarla a la lista
+        Persona p = new Persona();
+        p.setNombre(nombrePersona.getText());
+        p.setApellidos(apellidoPersona.getText());
+        p.setEdad(Integer.valueOf(edadPersona.getText()));
+
+        personasList.add(p);
+
+        // Convertir la lista completa a JSON
+        String json = gson.toJson(personasList);
+
+        // Guardar la lista actualizada en el archivo JSON
         try {
             Files.writeString(jsonFile.toPath(), json);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+
+        // Limpiar los campos de texto después de guardar
         nombrePersona.clear();
         apellidoPersona.clear();
         edadPersona.clear();
     }
 
-    private void onLimpiarCampos(ActionEvent e) {
+    public void onLimpiarCampos(ActionEvent e) {
         nombrePersona.clear();
         apellidoPersona.clear();
         edadPersona.clear();

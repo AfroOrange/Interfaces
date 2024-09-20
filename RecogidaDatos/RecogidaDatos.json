@@ -1,5 +1,12 @@
-{
-  "nombre": "nuha",
-  "apellidos": "wiwi",
-  "edad": 23
-}
+[
+  {
+    "nombre": "we",
+    "apellidos": "we",
+    "edad": 23
+  },
+  {
+    "nombre": "23we",
+    "apellidos": "23",
+    "edad": 23
+  }
+]
