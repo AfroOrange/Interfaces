@@ -138,9 +138,9 @@ public class RecogidaDatos extends Application {
         }
 
         // Limpiar los campos de texto después de guardar
-        nombrePersona.clear();
-        apellidoPersona.clear();
-        edadPersona.clear();
+            nombrePersona.clear();
+            apellidoPersona.clear();
+            edadPersona.clear();
     }
 
     public void onLimpiarCampos(ActionEvent e) {
