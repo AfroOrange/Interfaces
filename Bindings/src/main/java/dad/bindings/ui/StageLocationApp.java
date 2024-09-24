@@ -1,6 +1,7 @@
 package dad.bindings.ui;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -16,21 +17,15 @@ public class StageLocationApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        StringBinding x = stage.xProperty().asString();
-        StringBinding y = stage.yProperty().asString();
         StringBinding width = stage.widthProperty().asString();
         StringBinding height = stage.heightProperty().asString();
-
 
         coordsLabel = new Label();
         sizeLabel = new Label();
 
-        coordsLabel.textProperty().bind(
-                x.concat(", ")
-                        .concat(y)
-        );
+        coordsLabel.textProperty().bind(Bindings.concat("Pos: ", stage.xProperty(), " , ", stage.yProperty()));
 
-        sizeLabel.textProperty().bind(width.concat(", ").concat(height));
+        sizeLabel.textProperty().bind(Bindings.concat("Size: ", width, " , ", height));
 
         VBox root = new VBox();
         root.setSpacing(10);
@@ -40,5 +35,6 @@ public class StageLocationApp extends Application {
         stage.setScene(scene);
         stage.setTitle("Size and Location");
         stage.show();
+
     }
 }
