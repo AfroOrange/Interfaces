@@ -18,8 +18,4 @@ public class ProgressBarApp extends Application {
         primaryStage.setTitle("Progress Bar Example");
         primaryStage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
