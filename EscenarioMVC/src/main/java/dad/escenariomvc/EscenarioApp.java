@@ -14,8 +14,18 @@ public class EscenarioApp extends Application {
         Scene modificarScene = new Scene(modificarController.getRoot());
 
         Stage modificarStage = new Stage();
-        modificarStage.setTitle("titulo");
+        modificarStage.setTitle("Modificar Valor");
         modificarStage.setScene(modificarScene);
         modificarStage.show();
+
+        ProgressBarInterface progressBar = new ProgressBarInterface();
+        Scene verScene = new Scene(progressBar.getRoot());
+
+        Stage verStage = new Stage();
+        verStage.setTitle("Progress Bar");
+        verStage.setScene(verScene);
+        verStage.show();
+
+        progressBar.valueProperty().bind(modificarController.valueProperty());
     }
 }

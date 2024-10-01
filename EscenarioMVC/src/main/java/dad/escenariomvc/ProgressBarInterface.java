@@ -1,15 +1,21 @@
 package dad.escenariomvc;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ProgressBarInterface implements Initializable {
+
+    private IntegerProperty value = new SimpleIntegerProperty();
 
     @FXML
     private VBox root;
@@ -18,17 +24,28 @@ public class ProgressBarInterface implements Initializable {
     private Label valueLabel;
 
     @FXML
-    private ProgressBar progressBar;
+    private ProgressBar valueProgress;
+
+    public ProgressBarInterface() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ProgressBarView.fxml"));
+            loader.setController(this);
+            loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialization logic here, such as setting default values
-        progressBar.setProgress(0.5); // Example of setting initial progress
-        valueLabel.setText("50%");
+        valueProgress.progressProperty().bind(value.divide(100.0));
+        valueLabel.textProperty().bind(value.asString());
+
+    }
+    public IntegerProperty valueProperty() {
+        return value;
     }
 
-    private void setProgress(double v) {
-    }
 
     public VBox getRoot() {
         return root;
